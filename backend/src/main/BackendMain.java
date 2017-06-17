@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import java.util.Map;
 
-import static main.RequestUtils.getIntentName;
+import static main.RequestUtils.getIntent;
 
 /**
  * @author Marcello De Bernardi
@@ -32,7 +32,7 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
                 .version("1.0")
                 // .sessionAttributes(null)
                 .response(new Response()
-                        .outputSpeech("SSML", null, getIntentName(request).toString())
+                        .outputSpeech("SSML", null, getIntent(request).toString())
                         // .reprompt("goo", "byy", "hello")
                         // .card("goo", "boo", "cool", "sometext", null)
                         // .directives()

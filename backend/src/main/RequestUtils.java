@@ -14,10 +14,12 @@ class RequestUtils {
      * @param request alexa request
      * @return intent
      */
-    static Intent getIntentName(Map<String, Object> request) {
+    static Intent getIntent(Map<String, Object> request) {
         Map<String, Object> requestField = (Map<String, Object>) request.get("request");
         Map<String, Object> intent = (Map<String, Object>) requestField.get("intent");
 
         return Intent.valueOf(intent.get("name").toString());
     }
+
+
 }
