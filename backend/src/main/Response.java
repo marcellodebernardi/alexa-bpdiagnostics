@@ -6,6 +6,9 @@ import java.util.TreeMap;
 /**
  * Represents the response field within a json response.
  *
+ * For documentation on valid response formats, see:
+ * https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/alexa-skills-kit-interface-reference
+ *
  * @author Marcello De Bernardi
  */
 class Response {

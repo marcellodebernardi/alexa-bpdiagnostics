@@ -4,6 +4,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
+ * Builder object for constructing responses to send back to client. For documentation on
+ * correct response structure, see:
+ * <p>
+ * https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/alexa-skills-kit-interface-reference
+ *
  * @author Marcello De Bernardi
  */
 class ResponseBuilder {
