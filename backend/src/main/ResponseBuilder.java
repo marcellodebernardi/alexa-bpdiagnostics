@@ -6,12 +6,14 @@ import java.util.TreeMap;
 /**
  * @author Marcello De Bernardi
  */
-class ResponseGenerator {
+class ResponseBuilder {
     private Map<String, Object> jsonResponse;
+    private Map<String, Object> response;
 
 
-    ResponseGenerator() {
+    ResponseBuilder() {
         jsonResponse = new TreeMap<>();
+        response = new TreeMap<>();
     }
 
 
@@ -30,7 +32,7 @@ class ResponseGenerator {
      * @param version version number
      * @return this
      */
-    ResponseGenerator version(String version) {
+    ResponseBuilder version(String version) {
         jsonResponse.put("version", version);
         return this;
     }
@@ -41,7 +43,7 @@ class ResponseGenerator {
      * @param sessionAttributes session attributes
      * @return this
      */
-    ResponseGenerator sessionAttributes(Map<String, Object> sessionAttributes) {
+    ResponseBuilder sessionAttributes(Map<String, Object> sessionAttributes) {
         jsonResponse.put("sessionAttributes", sessionAttributes);
         return this;
     }
@@ -52,7 +54,7 @@ class ResponseGenerator {
      * @param response response body
      * @return this
      */
-    ResponseGenerator response(Map<String, Object> response) {
+    ResponseBuilder response(Map<String, Object> response) {
         jsonResponse.put("response", response);
         return this;
     }

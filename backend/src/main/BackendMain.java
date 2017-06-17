@@ -18,13 +18,12 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
      */
     @Override
     public Map<String, Object> handleRequest(Map<String, Object> request, Context context) {
-        ResponseGenerator responder = new ResponseGenerator();
-
+        ResponseBuilder responder = new ResponseBuilder();
 
         return responder
                 .version("1.0")
                 .sessionAttributes(null)
-                .response(null)
+                .response(new Response().outputSpeech("goo", "byy", "hello").out())
                 .getJsonResponse();
     }
 }
