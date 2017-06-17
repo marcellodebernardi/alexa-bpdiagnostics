@@ -1,5 +1,6 @@
 package main;
 
+import apis.GoogleMapsWrapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
@@ -20,7 +21,7 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
     @Override
     public Map<String, Object> handleRequest(Map<String, Object> request, Context context) {
         // for handling request and response
-        main.RequestHandler handler = new main.RequestHandler(request);
+        RequestParser parser = new RequestParser(request);
         ResponseBuilder responder = new ResponseBuilder();
 
 
@@ -33,11 +34,20 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
                 .version("1.0")
                 // .sessionAttributes(null)
                 .response(new Response()
-                        .outputSpeech("SSML", null, handler.getIntent().toString())
+                        .outputSpeech("SSML", null, new GoogleMapsWrapper().getMechanicSuggestion(0,0))
                         // .reprompt("goo", "byy", "hello")
                         // .card("goo", "boo", "cool", "sometext", null)
                         // .directives()
                         .shouldEndSession(false))
                 .getJsonResponse();
+    }
+
+
+    private String getDiagnostics() {
+        return null;
+    }
+
+    private String setAppointment() {
+        return null;
     }
 }
