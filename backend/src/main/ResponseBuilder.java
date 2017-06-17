@@ -8,12 +8,10 @@ import java.util.TreeMap;
  */
 class ResponseBuilder {
     private Map<String, Object> jsonResponse;
-    private Map<String, Object> response;
 
 
     ResponseBuilder() {
         jsonResponse = new TreeMap<>();
-        response = new TreeMap<>();
     }
 
 
@@ -54,8 +52,8 @@ class ResponseBuilder {
      * @param response response body
      * @return this
      */
-    ResponseBuilder response(Map<String, Object> response) {
-        jsonResponse.put("response", response);
+    ResponseBuilder response(Response response) {
+        jsonResponse.put("response", response.out());
         return this;
     }
 }

@@ -20,10 +20,17 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
     public Map<String, Object> handleRequest(Map<String, Object> request, Context context) {
         ResponseBuilder responder = new ResponseBuilder();
 
+        // general form of response
         return responder
                 .version("1.0")
                 .sessionAttributes(null)
-                .response(new Response().outputSpeech("goo", "byy", "hello").out())
+                .response(new Response()
+                        .outputSpeech("goo", "byy", "hello")
+                        .reprompt("goo", "byy", "hello")
+                        .card("goo", "boo", "cool", "sometext",
+                                new Response.ResponseImage("smallUrl", "largeUrl"))
+                        .directives()
+                        .shouldEndSession(false))
                 .getJsonResponse();
     }
 }

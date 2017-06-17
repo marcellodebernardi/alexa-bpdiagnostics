@@ -26,11 +26,73 @@ class Response {
     Response outputSpeech(String type, String text, String ssml) {
         Map<String, Object> outputSpeech = new TreeMap<>();
 
-        outputSpeech.put("type", type);
-        outputSpeech.put("text", text);
-        outputSpeech.put("ssml", ssml);
+        if (type != null) outputSpeech.put("type", type);
+        if (text != null) outputSpeech.put("text", text);
+        if (ssml != null) outputSpeech.put("ssml", ssml);
 
         response.put("outputSpeech", outputSpeech);
+        return this;
+    }
+
+    /**
+     * todo
+     *
+     * @param type
+     * @param title
+     * @param content
+     * @param text
+     * @return
+     */
+    Response card(String type, String title, String content, String text, ResponseImage image) {
+        Map<String, Object> card = new TreeMap<>();
+
+        if (type != null) card.put("type", type);
+        if (title != null) card.put("title", title);
+        if (content != null) card.put("content", content);
+        if (text != null) card.put("text", text);
+        if (image != null) card.put("image", image.out());
+
+        response.put("card", card);
+        return this;
+    }
+
+    /**
+     * todo
+     *
+     * @param type
+     * @param text
+     * @param ssml
+     * @return
+     */
+    Response reprompt(String type, String text, String ssml) {
+        // todo make this sensible
+        // if (ssml.length() > 8000) throw new IndexOutOfBoundsException();
+
+        Map<String, Object> reprompt = new TreeMap<>();
+        Map<String, Object> outputSpeech = new TreeMap<>();
+
+        if (type != null) outputSpeech.put("type", type);
+        if (text != null) outputSpeech.put("text", text);
+        if (ssml != null) outputSpeech.put("ssml", ssml);
+
+        reprompt.put("outputSpeech", outputSpeech);
+        response.put("reprompt", reprompt);
+        return this;
+    }
+
+
+    Response directives() {
+        return this;
+    }
+
+    /**
+     * Specifies whether the session should be ended by this response.
+     *
+     * @param shouldEndSession true if wish to end session, false otherwise
+     * @return response
+     */
+    Response shouldEndSession(boolean shouldEndSession) {
+        response.put("shouldEndSession", shouldEndSession);
         return this;
     }
 
@@ -41,5 +103,21 @@ class Response {
      */
     Map<String, Object> out() {
         return response;
+    }
+
+
+
+    static class ResponseImage {
+        private Map<String, Object> responseImage;
+
+        ResponseImage(String smallImageUrl, String largeImageUrl) {
+            responseImage = new TreeMap<>();
+            responseImage.put("smallImageUrl", smallImageUrl);
+            responseImage.put("largeImageUrl", largeImageUrl);
+        }
+
+        Map<String, Object> out() {
+            return responseImage;
+        }
     }
 }
