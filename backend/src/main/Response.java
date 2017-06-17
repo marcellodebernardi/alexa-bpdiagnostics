@@ -18,9 +18,9 @@ class Response {
     /**
      * Generates the map used for the outputSpeech field within the response field.
      *
-     * @param type todo
-     * @param text todo
-     * @param ssml todo
+     * @param type Must be either "SSML" or "PlainText"
+     * @param text Text to read, use when type is "PlainText"
+     * @param ssml Text to read, use when type is "SSML"
      * @return outputSpeech field
      */
     Response outputSpeech(String type, String text, String ssml) {

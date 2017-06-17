@@ -23,13 +23,12 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
         // general form of response
         return responder
                 .version("1.0")
-                .sessionAttributes(null)
+                // .sessionAttributes(null)
                 .response(new Response()
-                        .outputSpeech("goo", "byy", "hello")
-                        .reprompt("goo", "byy", "hello")
-                        .card("goo", "boo", "cool", "sometext",
-                                new Response.ResponseImage("smallUrl", "largeUrl"))
-                        .directives()
+                        .outputSpeech("SSML", null, "Hi, I'm Alexa.")
+                        // .reprompt("goo", "byy", "hello")
+                        // .card("goo", "boo", "cool", "sometext", null)
+                        // .directives()
                         .shouldEndSession(false))
                 .getJsonResponse();
     }
