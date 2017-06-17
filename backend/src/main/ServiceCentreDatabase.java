@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,13 +10,23 @@ import java.util.List;
  */
 public class ServiceCentreDatabase {
 
+    private static final int MAX_NUMBER_PRE_SLOT = 3;
+
     private List<Appointment> appointments= new LinkedList<>();
 
     public ServiceCentreDatabase() {}
 
-    public boolean avaliable(){
-        return false;
+    public boolean avaliable(String time, Date date){
+        int numberCurrentInSlot = 0;
+        for (Appointment a: appointments) {
+            if (a.getTime().equals(time) && a.getDate().equals(date)) {
+                numberCurrentInSlot++;
+            }
+        }
+        return numberCurrentInSlot < MAX_NUMBER_PRE_SLOT;
     }
-    //check if avaliable for the given time.
 
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+    }
 }

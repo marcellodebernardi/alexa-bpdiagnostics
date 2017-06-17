@@ -13,4 +13,7 @@ public class ServiceCentre {
         this.database = database;
     }
 
+    public ServiceCentreDatabase getDatabase() {
+        return database;
+    }
 }
