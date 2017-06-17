@@ -1,6 +1,7 @@
 package main;
 
-import apis.GoogleMapsWrapper;
+import apis.ZubieApi;
+import apis.GoogleMapsApi;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
@@ -11,6 +12,7 @@ import java.util.Map;
  * @author Marcello De Bernardi
  */
 public class BackendMain implements RequestHandler<Map<String, Object>, Map<String, Object>> {
+    private ResponseBuilder responder;
     /**
      * Handles the Alexa skill set trigger. Entry point for application.
      *
@@ -22,19 +24,26 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
     public Map<String, Object> handleRequest(Map<String, Object> request, Context context) {
         // for handling request and response
         RequestParser parser = new RequestParser(request);
-        ResponseBuilder responder = new ResponseBuilder();
+        responder = new ResponseBuilder();
 
 
-        // todo: logic goes here
+        switch(parser.getIntent()) {
+            case getDiagnostics:
+                return getDiagnostics();
+            case listProblems:
+                return listProblems();
+            case makeAppointment:
+                return makeAppointment();
+            // other cases
+        }
 
 
-        // todo build response here
         // general form of response, see documentation for validity requirements
         return responder
                 .version("1.0")
                 // .sessionAttributes(null)
                 .response(new Response()
-                        .outputSpeech("SSML", null, new GoogleMapsWrapper().getMechanicSuggestion(0,0))
+                        .outputSpeech("SSML", null, new GoogleMapsApi().getMechanicSuggestion(0,0))
                         // .reprompt("goo", "byy", "hello")
                         // .card("goo", "boo", "cool", "sometext", null)
                         // .directives()
@@ -43,11 +52,31 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
     }
 
 
-    private String getDiagnostics() {
-        return null;
+    private Map<String, Object> getDiagnostics() {
+        return responder.
+                version("1.0")
+                .response(new Response()
+                        .outputSpeech("SSML", null, ZubieApi.getDiagnostics())
+                        .shouldEndSession(false))
+                // reprompt, card, directives?
+                .getJsonResponse();
     }
 
-    private String setAppointment() {
-        return null;
+    private Map<String, Object> listProblems() {
+        return responder
+                .version("1.0")
+                .response(new Response()
+                        .outputSpeech("SSML", null, ZubieApi.getProblemList())
+                        .shouldEndSession(false))
+                .getJsonResponse();
+    }
+
+    private Map<String, Object> makeAppointment() {
+        return responder
+                .version("1.0")
+                .response(new Response()
+                        .outputSpeech("SSML", null, ZubieApi.getProblemList())
+                        .shouldEndSession(false))
+                .getJsonResponse();
     }
 }

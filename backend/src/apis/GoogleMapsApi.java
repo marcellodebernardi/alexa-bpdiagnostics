@@ -4,8 +4,8 @@ package apis;
 /**
  * @author Marcello De Bernardi
  */
-public class GoogleMapsWrapper {
-    public GoogleMapsWrapper() {}
+public class GoogleMapsApi {
+    public GoogleMapsApi() {}
 
     /**
      * Returns a mechanic suggestion to be given by alexa.
