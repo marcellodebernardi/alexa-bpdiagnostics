@@ -1,4 +1,4 @@
-package main;
+package apis;
 
 /**
  * Created by joantsomw on 6/17/17.
