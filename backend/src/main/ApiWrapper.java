@@ -6,5 +6,8 @@ package main;
  * @author Marcello De Bernardi
  */
 class ApiWrapper {
-    ApiWrapper() {}
+    ApiWrapper() {
+
+
+    }
 }
