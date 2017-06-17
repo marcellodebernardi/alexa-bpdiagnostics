@@ -34,7 +34,7 @@ public class BackendMain implements RequestHandler<Map<String, Object>, Map<Stri
                 .version("1.0")
                 // .sessionAttributes(null)
                 .response(new Response()
-                        .outputSpeech("SSML", null, new GoogleMapsWrapper().getMechanicSuggestion())
+                        .outputSpeech("SSML", null, new GoogleMapsWrapper().getMechanicSuggestion(0,0))
                         // .reprompt("goo", "byy", "hello")
                         // .card("goo", "boo", "cool", "sometext", null)
                         // .directives()
