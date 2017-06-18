@@ -1,5 +1,7 @@
 package main;
 
+import com.amazon.speech.slu.Intent;
+
 import java.util.Map;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Map;
  *
  * @author Marcello De Bernardi
  */
+
 class RequestParser {
     private Map<String, Object> request;
 
@@ -24,7 +27,7 @@ class RequestParser {
         Map<String, Object> requestField = (Map<String, Object>) request.get("request");
         Map<String, Object> intent = (Map<String, Object>) requestField.get("intent");
 
-        return Intent.valueOf(intent.get("name").toString());
+        return null; // Intent.valueOf(intent.get("name").toString());
     }
 
     /**
