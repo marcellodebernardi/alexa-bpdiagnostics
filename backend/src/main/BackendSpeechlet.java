@@ -1,5 +1,7 @@
 package main;
 
+import apis.StationFinderApi;
+import apis.ZubieApi;
 import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
@@ -15,12 +17,15 @@ import org.slf4j.LoggerFactory;
  */
 public class BackendSpeechlet implements SpeechletV2 {
     private static final Logger log = LoggerFactory.getLogger(BackendSpeechlet.class);
+    private static int CONVERSATION_PHASE;
 
 
     @Override
     public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
         log.info("onSessionStarted requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
                 requestEnvelope.getSession().getSessionId());
+
+        CONVERSATION_PHASE = 0;
     }
 
     @Override
@@ -28,7 +33,8 @@ public class BackendSpeechlet implements SpeechletV2 {
         log.info("onLaunch requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
                 requestEnvelope.getSession().getSessionId());
 
-        return getDiagnostics();
+        return null;
+        // return getDiagnostics();
     }
 
     @Override
@@ -40,38 +46,32 @@ public class BackendSpeechlet implements SpeechletV2 {
         Intent intent = requestEnvelope.getRequest().getIntent();
         String intentName = (intent != null) ? intent.getName() : null;
 
-        /*
         switch (intentName) {
             // request diagnosis
             case "getDiagnostics":
                 return getDiagnostics();
-            // request listing problems
-            case "listProblems":
-                return listProblems();
             // request making appointment
             case "makeAppointment":
                 return makeAppointment();
             // provide details in slots
-            case "provideAppointmentDetails":
-                return provideAppointmentDetails();
-            // print appointment details to user
-            case "print":
-                return print();
+            case "acceptAppointment":
+                return acceptAppointment();
+            case "goodbye":
+                return goodbye();
             // email details to user
-            case "email":
-                return email();
-            // user asks for nearest BP station
             case "nearestStation":
                 return getNearestStation();
-            // user asks for nearest mechanic
-            case "nearestMechanic":
-                return getNearestMechanic();
             // other cases todo amazon defaults
+            case "AMAZON.StopIntent":
+                PlainTextOutputSpeech outputSpeech = new PlainTextOutputSpeech();
+                outputSpeech.setText("");
+                return SpeechletResponse.newTellResponse(outputSpeech);
+            case "AMAZON.HelpIntent":
+
             default:
                 return undefinedIntent();
-        }*/
+        }
 
-        return getDiagnostics();
     }
 
     @Override
@@ -101,7 +101,8 @@ public class BackendSpeechlet implements SpeechletV2 {
         if (isOutputSsml) {
             outputSpeech = new SsmlOutputSpeech();
             ((SsmlOutputSpeech) outputSpeech).setSsml(stringOutput);
-        } else {
+        }
+        else {
             outputSpeech = new PlainTextOutputSpeech();
             ((PlainTextOutputSpeech) outputSpeech).setText(stringOutput);
         }
@@ -109,7 +110,8 @@ public class BackendSpeechlet implements SpeechletV2 {
         if (isRepromptSsml) {
             repromptOutputSpeech = new SsmlOutputSpeech();
             ((SsmlOutputSpeech) repromptOutputSpeech).setSsml(repromptText);
-        } else {
+        }
+        else {
             repromptOutputSpeech = new PlainTextOutputSpeech();
             ((PlainTextOutputSpeech) repromptOutputSpeech).setText(repromptText);
         }
@@ -121,23 +123,17 @@ public class BackendSpeechlet implements SpeechletV2 {
 
 
 
+
     /**
      * INTENT HANDLER: handles the initial intent that initiates the interactions.
      *
      * @return response
      */
     private SpeechletResponse getDiagnostics() {
-        return newAskResponse("<speak> That's not how knock knock jokes work! <break time=\"0.3s\" /> Knock knock </speak>",
-                true, "Yoooooooo", false);
-    }
-
-    /**
-     * INTENT HANDLER: handles a request to list problems with vehicle
-     *
-     * @return response
-     */
-    private SpeechletResponse listProblems() {
-        return null;
+        return newAskResponse("<speak> Welcome to BP vehicle health! I've analyzed your vehicle. " +
+                        "It would seem that there is a problem with "
+                + ZubieApi.getDiagnostics() + ". Would you like to book an appointment with a mechanic?</speak>",
+                true, "<speak>Would you like to book an appointment?</speak>", true);
     }
 
     /**
@@ -146,7 +142,9 @@ public class BackendSpeechlet implements SpeechletV2 {
      * @return response
      */
     private SpeechletResponse makeAppointment() {
-        return null;
+        return newAskResponse("<speak> A nearby BP station currently has available repair appointments for"
+                + " tomorrow. The station is " + StationFinderApi.getClosestStation().get(0) + ". Is 2 pm okay?</speak>",
+                true, "<speak>Should I make an appointment?</speak>", true);
     }
 
     /**
@@ -154,21 +152,11 @@ public class BackendSpeechlet implements SpeechletV2 {
      *
      * @return response
      */
-    private SpeechletResponse provideAppointmentDetails() {
+    private SpeechletResponse acceptAppointment() {
+        return newAskResponse("<speak> The appointment has been added to your Google calendar. Is there " +
+                        "anything else I can do for you? </speak>", true,
+                "<speak></speak>", true);
 
-        // todo code to create appointment? Not really needed + what would it even be
-
-        return null;
-
-    }
-
-    /**
-     * INTENT HANDLER: handles a request to print details for the appointment
-     *
-     * @return response
-     */
-    private SpeechletResponse print() {
-        return null;
     }
 
     /**
@@ -186,16 +174,15 @@ public class BackendSpeechlet implements SpeechletV2 {
      * @return response
      */
     private SpeechletResponse getNearestStation() {
-        return null;
+        return newAskResponse("<speak> The nearest BP station is " + StationFinderApi.getClosestStation().get(0)
+                        + ". Can I help you with anything else?</speak>",
+                true, "<speak>Anything else I can help you with?</speak>", true);
     }
 
-    /**
-     * INTENT HANDLER: handles requests for the closest mechanic
-     *
-     * @return response
-     */
-    private SpeechletResponse getNearestMechanic() {
-        return null;
+
+    private SpeechletResponse goodbye() {
+        return newAskResponse("<speak> Goodbye, and remember <break time=\"0.2s\" /> BP cares!</speak>",
+                true, "<speak>Thank you!</speak>", true);
     }
 
     /**

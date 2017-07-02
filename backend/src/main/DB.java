@@ -2,38 +2,34 @@ package main;
 
 import java.sql.*;
 
-public class DB
-{
+public class DB {
 
     private Connection con;
     private Statement st;
     private ResultSet rs;
 
-    public DB()
-    {
-        try
-        {
+    public DB() {
+        try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://alexa.ccihfqr4zy2e.us-east-1.rds.amazonaws.com/bp", "alexa", "PikaBoo123");
             st = con.createStatement();
 
-        } catch (Exception e)
-        {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         DB connect = new DB();
         connect.addCheckUP();
     }
 
-    public void addCheckUP()
-    {
-        try
-        {
-            String query = "INSERT INTO `bp`.`checkups` (`customer`, `DOB`, `car_odometer`, `car_battery`, `car_modelYear`, `car_modelName`, `car_makeName`, `engine_OSH`, `engine_misfire`, `engine_fuelSystem`, `engine_catalyst`, `issues`, `appointment`)"
+    public void addCheckUP() {
+        try {
+            String query = "INSERT INTO `bp`.`checkups` (`customer`, `DOB`, `car_odometer`, `car_battery`, " +
+                    "`car_modelYear`, `car_modelName`, `car_makeName`, `engine_OSH`, `engine_misfire`," +
+                    " `engine_fuelSystem`, `engine_catalyst`, `issues`, `appointment`)"
                     + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement prep = con.prepareStatement(query);
             prep.setString(1, "Marcello");
@@ -51,8 +47,8 @@ public class DB
             prep.setString(13, "test");
             prep.execute();
 
-        } catch (SQLException e)
-        {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }

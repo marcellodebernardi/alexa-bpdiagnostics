@@ -20,7 +20,7 @@ public class ZubieApi {
 
 
     public static String getDiagnostics() {
-        return "poo poo poo";
+        return "suspension";
     }
 
     public static String getProblemList() {

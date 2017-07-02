@@ -1,5 +1,6 @@
 package apis;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,6 +9,8 @@ import java.util.List;
 public class StationFinderApi {
 
     public static List<String> getClosestStation() {
-        return null;
+        List<String> list = new ArrayList<>();
+        list.add("White City petrol station");
+        return list;
     }
 }
