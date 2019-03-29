@@ -1,0 +1,37 @@
+C-Customer  A-Alexa
+C: How's my car?/ Can you check my car?/ What's wrong with my car?
+A: [Check if ENGIE is plug in the car]
+   [if yes] 
+     Vehicle detected. Running Diagnostics... Please do not unplug before this process complete.
+     (may be play music/advertisement during the check)
+   [If not]
+     Please plug ing the ENGIE cable into the OBDII port on your car.
+     [keep checking if pluged or not] (loop back)
+
+   [After checking]
+     Diagnostics Completed
+     [if no problem]
+       Your car is prefect! Please unplug the ENGIE cable from your car
+       [after unpluged]
+         Thank You! See you next time!.
+     [if there are problems]
+       Your car is (the problem)! Would you like me to book you an appointment for a fix?
+
+C: Yes/Sure/No Thank you!
+A: [yes]
+     What is your name?
+     Where about you would like to go for the repair?
+       [recommand sevice centre around that location]
+     Which service centre would you like to go?
+     What time and which day would you like to go?
+       [if not avalible]
+         The time you request is not avalible(Suggest similar time)
+         (Ask for another time)
+     Would you like an email for the detail of the appointment?
+       [yes]
+         What is your email address?
+         [repeat after receive answer]
+     [Print Appointment]
+   [no]
+     [Recommand Service Centre]
+    
